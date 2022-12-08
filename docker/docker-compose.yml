@@ -1,0 +1,36 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - 5433:5432
+    networks:
+      - back_nt
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db_jukebox
+    volumes:
+      - ./data-postgres.sql:/docker-entrypoint-initdb.d/data.sql
+  springboot:
+    depends_on:
+      - postgres
+    networks:
+      - back_nt
+    build: ..
+    image: jukebox-spring
+    container_name: jukebox
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      POSTGRESQL_DB_SERVER: host.docker.internal:5433
+      POSTGRESQL_DB_NAME: db_jukebox
+      POSTGRESQL_DB_USER: postgres
+      POSTGRESQL_DB_PASSWORD: postgres
+networks:
+  back_nt:
+    driver: bridge
+volumes:
+  dumps:
