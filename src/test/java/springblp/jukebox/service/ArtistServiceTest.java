@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -44,13 +45,23 @@ public class ArtistServiceTest {
         inputArtists.add(new Artist("Marguerite","Il était une fois",3));
         inputArtists.add(new Artist("Marie","la petite maison",3));
         when(repository.findAll()).thenReturn(inputArtists);
+        when(repository.findByNameContaining("Ma")).thenReturn(
+        		inputArtists.stream()
+        			.filter(e -> e.getName().startsWith("Ma"))
+        			.collect(Collectors.toList())
+        	);
 
         //WHEN
         List<Artist> outputArtists = service.findAll("");
 
         //THEN
         assertThat(outputArtists.size()).isEqualTo(3);
+        
+       //WHEN
+        outputArtists = service.findAll("Ma");
 
+        //THEN
+        assertThat(outputArtists.size()).isEqualTo(2);
     }
 
     @DisplayName("find all artists by name")
