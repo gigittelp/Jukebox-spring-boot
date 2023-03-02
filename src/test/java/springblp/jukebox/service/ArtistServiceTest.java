@@ -89,9 +89,9 @@ public class ArtistServiceTest {
 
         //GIVEN
         long idArtist = 50;
-        Optional<Artist> inputArtist = Optional.of(new Artist("Indo","c'est ma bio",50));
+        Optional<Artist> inputArtist = Optional.of(new Artist("Indo","c'est ma bio",490));
         inputArtist.get().setId(idArtist);
-        when(repository.findById(idArtist)).thenReturn(inputArtist);
+        org.mockito.Mockito.when(repository.findById(idArtist)).thenReturn(inputArtist);
 
         //WHEN
         Optional<Artist> outputArtist = service.findById(idArtist);
