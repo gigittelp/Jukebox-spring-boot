@@ -1,5 +1,5 @@
 # compilation environnement
-FROM maven:3.6.3-adoptopenjdk-15 AS build-stage
+FROM maven:3.9.0-eclipse-temurin-17-alpine AS build-stage
 ENV run_env=prod
 # copy src
 COPY pom.xml /jukebox/pom.xml
@@ -12,7 +12,7 @@ WORKDIR /jukebox
 RUN mvn package -P$run_env -DskipTests
 
 # execute on new environnement
-FROM openjdk:12-alpine3.9 AS production-stage
+FROM eclipse-temurin:17-alpine AS production-stage
 RUN mkdir /app
 COPY --from=build-stage /jukebox/target/jukebox.jar /app
 WORKDIR /app
