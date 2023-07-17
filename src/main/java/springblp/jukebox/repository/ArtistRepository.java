@@ -8,5 +8,5 @@ import springblp.jukebox.model.Artist;
 
 public interface ArtistRepository extends JpaRepository<Artist, Long>{
 
-	List<Artist> findByNameContaining(String name) ;
+	List<Artist> findByNameContaining(String name);
 }
